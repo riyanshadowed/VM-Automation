@@ -36,11 +36,23 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
+    const rawToken = typeof body.pageAccessToken === "string" ? body.pageAccessToken.trim() : "";
+    if (rawToken && (rawToken.includes(" ") || rawToken.includes("\n") || rawToken.startsWith("App "))) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Invalid Access Token! Aapne Meta ka debug/profile text copy kar liya hai. Real access token ek single line string hoti hai jo 'EAA...' se start hoti hai aur usme koi spaces nahi hote.",
+        },
+        { status: 400 }
+      );
+    }
+
     const updated = await saveSettings({
       metaAppId: body.metaAppId,
       metaAppSecret: body.metaAppSecret,
       metaVerifyToken: body.metaVerifyToken,
-      pageAccessToken: body.pageAccessToken,
+      pageAccessToken: rawToken,
       instagramAccountId: body.instagramAccountId,
       pageId: body.pageId,
     });
