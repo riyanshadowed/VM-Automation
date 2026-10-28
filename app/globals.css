@@ -27,6 +27,7 @@
     --color-indigo-500: oklch(58.5% 0.233 277.117);
     --color-indigo-600: oklch(51.1% 0.262 276.966);
     --color-indigo-700: oklch(45.7% 0.24 277.023);
+    --color-indigo-900: oklch(35.9% 0.144 278.697);
     --color-indigo-950: oklch(25.7% 0.09 281.288);
     --color-violet-50: oklch(96.9% 0.016 293.756);
     --color-violet-100: oklch(94.3% 0.029 294.588);
@@ -995,6 +996,9 @@
   .text-indigo-700 {
     color: var(--color-indigo-700);
   }
+  .text-indigo-900 {
+    color: var(--color-indigo-900);
+  }
   .text-rose-500 {
     color: var(--color-rose-500);
   }
@@ -1102,6 +1106,9 @@
   @media (hover: hover) {
     .hover\:bg-emerald-700:hover {
       background-color: var(--color-emerald-700);
+    }
+    .hover\:bg-indigo-100:hover {
+      background-color: var(--color-indigo-100);
     }
     .hover\:bg-rose-50:hover {
       background-color: var(--color-rose-50);

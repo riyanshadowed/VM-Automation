@@ -79,6 +79,7 @@ interface WebhookEntry {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("Incoming Webhook Event:", JSON.stringify(body));
 
     if (body.object !== "instagram" && body.object !== "page") {
       return NextResponse.json({ status: "ignored", reason: "not_instagram" });

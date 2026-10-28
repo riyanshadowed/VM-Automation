@@ -145,6 +145,26 @@ export default function Home() {
   });
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsSuccess, setSettingsSuccess] = useState(false);
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscribeStatus, setSubscribeStatus] = useState<string | null>(null);
+
+  const handleSubscribePage = async () => {
+    try {
+      setSubscribing(true);
+      setSubscribeStatus(null);
+      const res = await fetch("/api/instagram/subscribe-page", { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        setSubscribeStatus("Page & Instagram successfully subscribed to Webhook! Real comments will now flow.");
+      } else {
+        setSubscribeStatus("Error: " + (data.error || "Failed to subscribe"));
+      }
+    } catch {
+      setSubscribeStatus("Error calling subscription API");
+    } finally {
+      setSubscribing(false);
+    }
+  };
 
   // Load initial data
   const fetchData = useCallback(async () => {
@@ -1277,13 +1297,28 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="pt-2">
+                    {subscribeStatus && (
+                      <div className="rounded-xl bg-indigo-50 border border-indigo-200 p-3 text-xs font-semibold text-indigo-900">
+                        {subscribeStatus}
+                      </div>
+                    )}
+
+                    <div className="pt-2 flex flex-wrap items-center gap-3">
                       <button
                         type="submit"
                         disabled={savingSettings}
                         className="rounded-xl bg-slate-900 px-6 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition disabled:opacity-50"
                       >
                         {savingSettings ? "Saving Settings..." : "Save Meta Credentials"}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleSubscribePage}
+                        disabled={subscribing}
+                        className="rounded-xl border border-indigo-200 bg-indigo-50 px-5 py-2.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition disabled:opacity-50"
+                      >
+                        {subscribing ? "Subscribing Page..." : "🔗 Subscribe Page to Webhooks (1-Click)"}
                       </button>
                     </div>
                   </form>
