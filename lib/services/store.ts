@@ -425,25 +425,40 @@ export async function getSettings(): Promise<AppSettings> {
 }
 
 export async function saveSettings(settings: Partial<AppSettings>): Promise<AppSettings> {
+  const cleanSettings: Partial<AppSettings> = {};
+  for (const [key, value] of Object.entries(settings)) {
+    if (value !== undefined && value !== null) {
+      if (
+        (key === "pageAccessToken" || key === "metaAppSecret") &&
+        typeof value === "string" &&
+        value.trim() === ""
+      ) {
+        // Do not erase existing token/secret with an empty string
+        continue;
+      }
+      (cleanSettings as Record<string, unknown>)[key] = value;
+    }
+  }
+
   const db = await connectToDatabase();
   if (db) {
     const updated = await SettingsModel.findOneAndUpdate(
       {},
-      { $set: settings },
+      { $set: cleanSettings },
       { upsert: true, new: true }
     ).lean();
     return {
-      metaAppId: updated.metaAppId || "",
-      metaAppSecret: updated.metaAppSecret || "",
-      metaVerifyToken: updated.metaVerifyToken || "vyapar_automate_verify_token_123",
-      pageAccessToken: updated.pageAccessToken || "",
-      instagramAccountId: updated.instagramAccountId || "",
-      pageId: updated.pageId || "",
+      metaAppId: updated?.metaAppId || "",
+      metaAppSecret: updated?.metaAppSecret || "",
+      metaVerifyToken: updated?.metaVerifyToken || "vyapar_automate_verify_token_123",
+      pageAccessToken: updated?.pageAccessToken || "",
+      instagramAccountId: updated?.instagramAccountId || "",
+      pageId: updated?.pageId || "",
     };
   }
 
   const data = getLocalData();
-  data.settings = { ...data.settings, ...settings };
+  data.settings = { ...data.settings, ...cleanSettings };
   saveLocalData(data);
   return data.settings;
 }

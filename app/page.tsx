@@ -20,6 +20,8 @@ import {
   Shield,
   Heart,
   Info,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 interface Rule {
@@ -99,6 +101,7 @@ export default function Home() {
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [showToken, setShowToken] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState("http://localhost:3000/api/instagram/webhook");
@@ -194,6 +197,7 @@ export default function Home() {
           metaVerifyToken: settingsData.settings.metaVerifyToken || "vyapar_automate_verify_token_123",
           instagramAccountId: settingsData.settings.instagramAccountId || "",
           pageId: settingsData.settings.pageId || "",
+          pageAccessToken: settingsData.settings.pageAccessToken || prev.pageAccessToken || "",
         }));
       }
     } catch (err) {
@@ -366,6 +370,12 @@ export default function Home() {
       const data = await res.json();
       if (data.success) {
         setSettings(data.settings);
+        if (data.settings.pageAccessToken) {
+          setSettingsForm((prev) => ({
+            ...prev,
+            pageAccessToken: data.settings.pageAccessToken,
+          }));
+        }
         setSettingsSuccess(true);
         setTimeout(() => setSettingsSuccess(false), 3000);
       } else {
@@ -1196,27 +1206,45 @@ export default function Home() {
 
                   <form onSubmit={handleSaveSettings} className="mt-6 space-y-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                        Page Access Token (Instagram &amp; Facebook Page Token)
-                      </label>
-                      <input
-                        type="password"
-                        value={settingsForm.pageAccessToken}
-                        onChange={(e) =>
-                          setSettingsForm({
-                            ...settingsForm,
-                            pageAccessToken: e.target.value,
-                          })
-                        }
-                        placeholder={
-                          settings.hasPageAccessToken
-                            ? `Configured (${settings.pageAccessTokenMasked})`
-                            : "EAA..."
-                        }
-                        className="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-mono text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
-                      />
+                      <div className="flex items-center justify-between">
+                        <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                          Page Access Token (Instagram &amp; Facebook Page Token)
+                        </label>
+                        {settings.hasPageAccessToken && (
+                          <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
+                            <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                            Saved &amp; Active
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-1.5 relative">
+                        <input
+                          type={showToken ? "text" : "password"}
+                          value={settingsForm.pageAccessToken}
+                          onChange={(e) =>
+                            setSettingsForm({
+                              ...settingsForm,
+                              pageAccessToken: e.target.value,
+                            })
+                          }
+                          placeholder={
+                            settings.hasPageAccessToken
+                              ? `Configured (${settings.pageAccessTokenMasked})`
+                              : "Paste your EAAL... token here"
+                          }
+                          className="w-full rounded-xl border border-slate-200 px-4 py-2.5 pr-10 text-xs font-mono text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowToken(!showToken)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        >
+                          {showToken ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
                       <p className="mt-1 text-[11px] text-slate-400">
-                        Requires <code className="text-slate-600">instagram_manage_comments</code> &amp;{" "}
+                        Requires <code className="text-slate-600">instagram_basic</code>,{" "}
+                        <code className="text-slate-600">instagram_manage_comments</code> &amp;{" "}
                         <code className="text-slate-600">instagram_manage_messages</code> permissions.
                       </p>
                     </div>

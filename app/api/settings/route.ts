@@ -11,7 +11,7 @@ export async function GET() {
         metaVerifyToken: settings.metaVerifyToken,
         instagramAccountId: settings.instagramAccountId,
         pageId: settings.pageId,
-        // Mask access token for security if present
+        pageAccessToken: settings.pageAccessToken || "",
         hasPageAccessToken: Boolean(settings.pageAccessToken),
         pageAccessTokenMasked: settings.pageAccessToken
           ? settings.pageAccessToken.substring(0, 10) +
@@ -52,7 +52,15 @@ export async function POST(request: NextRequest) {
         metaVerifyToken: updated.metaVerifyToken,
         instagramAccountId: updated.instagramAccountId,
         pageId: updated.pageId,
+        pageAccessToken: updated.pageAccessToken || "",
         hasPageAccessToken: Boolean(updated.pageAccessToken),
+        pageAccessTokenMasked: updated.pageAccessToken
+          ? updated.pageAccessToken.substring(0, 10) +
+            "..." +
+            updated.pageAccessToken.substring(
+              Math.max(0, updated.pageAccessToken.length - 6)
+            )
+          : "",
         hasAppSecret: Boolean(updated.metaAppSecret),
       },
     });
