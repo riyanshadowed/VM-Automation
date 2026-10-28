@@ -153,12 +153,16 @@ export async function sendPublicCommentReply(
 export async function sendPrivateReplyDM(
   commentId: string,
   message: string,
-  accessToken: string
+  accessToken: string,
+  targetId?: string
 ): Promise<{ success: boolean; data?: unknown; error?: string }> {
   try {
-    const url = `https://graph.facebook.com/v21.0/me/messages?access_token=${encodeURIComponent(
-      accessToken
-    )}`;
+    // Prefer Page ID or Instagram Account ID instead of 'me'
+    const endpointId = targetId && targetId !== "me" ? targetId : "me";
+    const url = `https://graph.facebook.com/v21.0/${encodeURIComponent(
+      endpointId
+    )}/messages?access_token=${encodeURIComponent(accessToken)}`;
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -284,7 +288,11 @@ export async function processInstagramComment(
     }
 
     // 2. Send private DM
-    const dmRes = await sendPrivateReplyDM(commentId, formattedDM, token);
+    const targetId = settings.pageId || settings.instagramAccountId;
+    let dmRes = await sendPrivateReplyDM(commentId, formattedDM, token, targetId);
+    if (!dmRes.success && settings.instagramAccountId && targetId !== settings.instagramAccountId) {
+      dmRes = await sendPrivateReplyDM(commentId, formattedDM, token, settings.instagramAccountId);
+    }
     dmSuccess = dmRes.success;
     if (!dmRes.success) {
       errorMessage = errorMessage
