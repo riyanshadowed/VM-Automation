@@ -1241,6 +1241,14 @@
     }
   }
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
@@ -1539,4 +1547,12 @@ body {
       --tw-backdrop-sepia: initial;
     }
   }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

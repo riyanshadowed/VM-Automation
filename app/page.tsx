@@ -22,6 +22,9 @@ import {
   Info,
   Eye,
   EyeOff,
+  Menu,
+  X,
+  ChevronRight,
 } from "lucide-react";
 
 interface Rule {
@@ -101,6 +104,7 @@ export default function Home() {
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showToken, setShowToken] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -396,7 +400,131 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans antialiased">
       <div className="mx-auto flex min-h-screen max-w-[1440px]">
-        {/* Sidebar */}
+        {/* Mobile Slide-Over Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <div
+              className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            <div className="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white p-5 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-left duration-200">
+              <div>
+                <div className="flex items-center justify-between pb-5 border-b border-slate-100">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-sm font-bold text-white shadow-md shadow-indigo-100">
+                      VA
+                    </div>
+                    <div>
+                      <p className="font-bold tracking-tight text-slate-900 leading-tight">Vyapar Automate</p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <p className="text-[11px] text-slate-500 font-medium">Instagram Auto-DM</p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+                    aria-label="Close menu"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <nav className="mt-5 space-y-1.5 text-sm font-medium">
+                  <button
+                    onClick={() => {
+                      setActiveTab("overview");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-3 transition ${
+                      activeTab === "overview"
+                        ? "bg-slate-900 text-white shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
+                  >
+                    <Activity className="h-4 w-4" />
+                    <span>Overview Dashboard</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab("rules");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`flex w-full items-center justify-between rounded-xl px-3.5 py-3 transition ${
+                      activeTab === "rules"
+                        ? "bg-slate-900 text-white shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Layers className="h-4 w-4" />
+                      <span>Automations</span>
+                    </div>
+                    <span className="rounded-full bg-slate-200/80 px-2 py-0.5 text-xs text-slate-700">
+                      {rules.length}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab("simulator");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-3 transition ${
+                      activeTab === "simulator"
+                        ? "bg-slate-900 text-white shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
+                  >
+                    <Sparkles className="h-4 w-4 text-violet-500" />
+                    <span>Test Simulator</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setActiveTab("settings");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-3 transition ${
+                      activeTab === "settings"
+                        ? "bg-slate-900 text-white shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
+                  >
+                    <SettingsIcon className="h-4 w-4" />
+                    <span>Meta API Settings</span>
+                  </button>
+                </nav>
+              </div>
+
+              {/* Mobile Drawer Bottom Info */}
+              <div className="pt-4 border-t border-slate-100">
+                <div className="rounded-xl border border-violet-100 bg-violet-50/70 p-3.5">
+                  <div className="flex items-center gap-2 text-violet-900">
+                    <Shield className="h-4 w-4 text-violet-600" />
+                    <p className="text-xs font-semibold uppercase tracking-wider">Meta Graph API</p>
+                  </div>
+                  <div className="mt-2 flex items-center gap-2 text-[11px]">
+                    <span
+                      className={`h-2 w-2 rounded-full ${
+                        dbStatus.isAtlas
+                          ? dbStatus.isConnected
+                            ? "bg-emerald-500 animate-pulse"
+                            : "bg-rose-500"
+                          : "bg-blue-500"
+                      }`}
+                    ></span>
+                    <span className="font-semibold text-slate-800">{dbStatus.type}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Desktop Sidebar */}
         <aside className="hidden w-64 shrink-0 border-r border-slate-200 bg-white px-5 py-6 lg:flex lg:flex-col">
           <div className="mb-8 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-sm font-bold text-white shadow-md shadow-indigo-100">
@@ -496,76 +624,87 @@ export default function Home() {
         {/* Main Content Area */}
         <section className="flex-1 flex flex-col min-w-0">
           {/* Header */}
-          <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 backdrop-blur-md px-6 py-4 sm:px-10">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">
-                  Instagram Automation
-                </span>
-                <span className="text-slate-300">•</span>
-                <span className="text-xs font-medium text-indigo-600 capitalize">
-                  {activeTab}
-                </span>
+          <header className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white/90 backdrop-blur-md px-4 py-3 sm:px-8 sm:py-4">
+            <div className="flex items-center gap-3 min-w-0">
+              {/* Mobile Drawer Button */}
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="lg:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 transition active:scale-95"
+                aria-label="Open menu"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    Vyapar Automate
+                  </span>
+                  <span className="text-slate-300">•</span>
+                  <span className="text-[10px] sm:text-xs font-semibold text-indigo-600 capitalize">
+                    {activeTab}
+                  </span>
+                </div>
+                <h1 className="text-sm sm:text-xl font-bold tracking-tight text-slate-900 truncate">
+                  {activeTab === "overview" && "Dashboard & Activity"}
+                  {activeTab === "rules" && "Automation Rules"}
+                  {activeTab === "simulator" && "Event Simulator"}
+                  {activeTab === "settings" && "Meta API Settings"}
+                </h1>
               </div>
-              <h1 className="mt-0.5 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-                {activeTab === "overview" && "Dashboard & Live Activity"}
-                {activeTab === "rules" && "Comment-to-DM Automation Rules"}
-                {activeTab === "simulator" && "Live Webhook & Comment Simulator"}
-                {activeTab === "settings" && "Meta API & Webhook Configuration"}
-              </h1>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={fetchData}
                 disabled={refreshing}
                 title="Refresh data"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm hover:bg-slate-50 transition"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white p-2 sm:px-3 sm:py-2 text-xs font-medium text-slate-600 shadow-sm hover:bg-slate-50 transition active:scale-95"
               >
-                <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
+                <RefreshCw className={`h-4 w-4 sm:h-3.5 sm:w-3.5 ${refreshing ? "animate-spin" : ""}`} />
                 <span className="hidden sm:inline">Refresh</span>
               </button>
 
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition active:scale-95"
               >
                 <Plus className="h-4 w-4" />
-                <span>New Automation</span>
+                <span className="hidden xs:inline sm:inline">New Rule</span>
               </button>
             </div>
           </header>
 
           {/* Page Body */}
-          <div className="flex-1 p-6 sm:p-10 space-y-8">
+          <div className="flex-1 p-3.5 sm:p-6 lg:p-10 space-y-5 sm:space-y-8 pb-24 lg:pb-10">
             {/* OVERVIEW TAB */}
             {activeTab === "overview" && (
               <>
                 {/* Hero Banner */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 p-6 text-white shadow-lg sm:p-8">
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 p-4 sm:p-8 text-white shadow-lg">
                   <div className="relative z-10 max-w-2xl">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 px-3 py-1 text-xs font-medium text-indigo-300 backdrop-blur-sm border border-indigo-500/30">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 px-3 py-1 text-[11px] sm:text-xs font-medium text-indigo-300 backdrop-blur-sm border border-indigo-500/30">
                       <Sparkles className="h-3.5 w-3.5 text-indigo-300" />
                       Instant Lead Generation Engine
                     </span>
-                    <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
+                    <h2 className="mt-3 sm:mt-4 text-lg sm:text-2xl font-bold tracking-tight">
                       Reel & Post Comments ko Direct Customers me convert karein.
                     </h2>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-300">
                       Jab koi follower aapke Reel ya Post par keyword comment karega (jaise &ldquo;PRICE&rdquo;, &ldquo;LINK&rdquo;, &ldquo;PDF&rdquo;),
                       hamara system instantly public comment reply dega aur direct message (DM) me link send karega.
                     </p>
 
-                    <div className="mt-6 flex flex-wrap items-center gap-3">
+                    <div className="mt-5 sm:mt-6 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5">
                       <button
                         onClick={() => setActiveTab("simulator")}
-                        className="rounded-xl bg-white px-4 py-2.5 text-xs font-semibold text-slate-950 transition hover:bg-slate-100 shadow-sm"
+                        className="rounded-xl bg-white px-4 py-2.5 text-xs font-semibold text-slate-950 transition hover:bg-slate-100 shadow-sm text-center"
                       >
                         Try Live Simulator →
                       </button>
                       <button
                         onClick={() => setActiveTab("rules")}
-                        className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/10"
+                        className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/10 text-center"
                       >
                         Manage Rules ({rules.length})
                       </button>
@@ -574,88 +713,88 @@ export default function Home() {
                 </div>
 
                 {/* KPI Metrics Grid */}
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  <article className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-4 xl:grid-cols-4">
+                  <article className="rounded-2xl border border-slate-200/80 bg-white p-3.5 sm:p-5 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                        Comments Processed
+                      <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        Processed
                       </p>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                        <MessageSquare className="h-4 w-4" />
+                      <span className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                        <MessageSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </span>
                     </div>
-                    <p className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">
+                    <p className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
                       {stats.commentsProcessed}
                     </p>
-                    <p className="mt-1 text-xs text-slate-500">Total webhook events received</p>
+                    <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">Comments received</p>
                   </article>
 
-                  <article className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+                  <article className="rounded-2xl border border-slate-200/80 bg-white p-3.5 sm:p-5 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                        Matched Keywords
+                      <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        Triggered
                       </p>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-50 text-violet-600">
-                        <Sparkles className="h-4 w-4" />
+                      <span className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg bg-violet-50 text-violet-600">
+                        <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </span>
                     </div>
-                    <p className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">
+                    <p className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
                       {stats.matchedComments}
                     </p>
-                    <p className="mt-1 text-xs text-slate-500">Automations triggered</p>
+                    <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">Automations matched</p>
                   </article>
 
-                  <article className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+                  <article className="rounded-2xl border border-slate-200/80 bg-white p-3.5 sm:p-5 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                        Direct Messages Sent
+                      <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        DMs Sent
                       </p>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-                        <Send className="h-4 w-4" />
+                      <span className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                        <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </span>
                     </div>
-                    <p className="mt-3 text-3xl font-extrabold tracking-tight text-emerald-600">
+                    <p className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-emerald-600">
                       {stats.successfulDMs}
                     </p>
-                    <p className="mt-1 text-xs text-slate-500">Private DMs delivered</p>
+                    <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">Delivered to inbox</p>
                   </article>
 
-                  <article className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+                  <article className="rounded-2xl border border-slate-200/80 bg-white p-3.5 sm:p-5 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                        Active Automations
+                      <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        Active Rules
                       </p>
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
-                        <Layers className="h-4 w-4" />
+                      <span className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+                        <Layers className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </span>
                     </div>
-                    <p className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">
+                    <p className="mt-2 sm:mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
                       {stats.activeRulesCount}{" "}
-                      <span className="text-sm font-normal text-slate-400">/ {rules.length}</span>
+                      <span className="text-xs sm:text-sm font-normal text-slate-400">/ {rules.length}</span>
                     </p>
-                    <p className="mt-1 text-xs text-slate-500">Keyword rules running</p>
+                    <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">Running automations</p>
                   </article>
                 </div>
 
                 {/* Webhook & Setup Quick Card */}
-                <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-sm">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-                        <h3 className="font-semibold text-slate-900">Your Meta Webhook Endpoint</h3>
+                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <h3 className="font-semibold text-sm sm:text-base text-slate-900">Your Meta Webhook Endpoint</h3>
                       </div>
-                      <p className="mt-1 text-xs text-slate-500">
+                      <p className="mt-1 text-[11px] sm:text-xs text-slate-500">
                         Use this endpoint in your Meta Developer App &gt; Webhooks &gt; Instagram.
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <code className="rounded-lg bg-slate-100 px-3 py-1.5 font-mono text-xs text-slate-700 max-w-[280px] sm:max-w-md truncate">
+                    <div className="flex items-center gap-2 w-full md:w-auto">
+                      <code className="flex-1 md:flex-initial rounded-lg bg-slate-100 px-3 py-2 font-mono text-[11px] sm:text-xs text-slate-700 break-all select-all">
                         {webhookUrl}
                       </code>
                       <button
                         onClick={() => copyToClipboard(webhookUrl, "webhook")}
-                        className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 transition"
+                        className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition active:scale-95"
                       >
                         {copiedField === "webhook" ? (
                           <>
@@ -675,19 +814,19 @@ export default function Home() {
 
                 {/* Activity Feed Section */}
                 <div className="rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 px-6 py-4 gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 p-4 sm:px-6 gap-3">
                     <div>
-                      <h2 className="font-bold text-slate-900">Recent Activity Logs</h2>
-                      <p className="text-xs text-slate-500">Real-time incoming comments &amp; automated responses</p>
+                      <h2 className="font-bold text-sm sm:text-base text-slate-900">Recent Activity Logs</h2>
+                      <p className="text-[11px] sm:text-xs text-slate-500">Real-time incoming comments &amp; automated responses</p>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="flex rounded-lg bg-slate-100 p-0.5 text-xs font-medium">
+                    <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+                      <div className="flex overflow-x-auto no-scrollbar rounded-lg bg-slate-100 p-1 text-xs font-medium max-w-full">
                         {(["all", "success", "ignored", "failed"] as const).map((filter) => (
                           <button
                             key={filter}
                             onClick={() => setLogFilter(filter)}
-                            className={`rounded-md px-2.5 py-1 capitalize transition ${
+                            className={`rounded-md px-2.5 py-1 capitalize transition shrink-0 ${
                               logFilter === filter
                                 ? "bg-white text-slate-900 shadow-sm"
                                 : "text-slate-600 hover:text-slate-900"
@@ -701,7 +840,7 @@ export default function Home() {
                       {logs.length > 0 && (
                         <button
                           onClick={handleClearLogs}
-                          className="text-xs text-slate-400 hover:text-rose-600 transition px-2 py-1"
+                          className="shrink-0 text-xs text-slate-400 hover:text-rose-600 transition px-2 py-1"
                         >
                           Clear
                         </button>
@@ -804,26 +943,26 @@ export default function Home() {
 
             {/* AUTOMATIONS / RULES TAB */}
             {activeTab === "rules" && (
-              <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-lg font-bold text-slate-900">Active Keyword Rules</h2>
-                    <p className="text-xs text-slate-500">
+                    <h2 className="text-base sm:text-lg font-bold text-slate-900">Active Keyword Rules</h2>
+                    <p className="text-[11px] sm:text-xs text-slate-500">
                       Configure keywords, comment reply variations, and automatic direct messages.
                     </p>
                   </div>
                   <button
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition self-start sm:self-auto"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition w-full sm:w-auto active:scale-95"
                   >
                     <Plus className="h-4 w-4" />
                     <span>Create Automation Rule</span>
                   </button>
                 </div>
 
-                <div className="grid gap-4">
+                <div className="grid gap-3 sm:gap-4">
                   {rules.length === 0 ? (
-                    <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-8 sm:p-12 text-center">
                       <Layers className="mx-auto h-10 w-10 text-slate-300" />
                       <h3 className="mt-3 text-base font-semibold text-slate-800">No automation rules yet</h3>
                       <p className="mt-1 text-xs text-slate-500">
@@ -831,7 +970,7 @@ export default function Home() {
                       </p>
                       <button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="mt-5 inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-xs font-semibold text-white"
+                        className="mt-5 inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white"
                       >
                         <Plus className="h-4 w-4" />
                         Create First Rule
@@ -841,18 +980,18 @@ export default function Home() {
                     rules.map((rule) => (
                       <div
                         key={rule._id}
-                        className={`rounded-2xl border transition bg-white p-6 shadow-sm ${
+                        className={`rounded-2xl border transition bg-white p-4 sm:p-6 shadow-sm ${
                           rule.isActive
                             ? "border-slate-200/80"
                             : "border-slate-200/50 opacity-70 bg-slate-50/50"
                         }`}
                       >
-                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2.5">
-                              <h3 className="font-bold text-base text-slate-900">{rule.name}</h3>
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h3 className="font-bold text-sm sm:text-base text-slate-900">{rule.name}</h3>
                               <span
-                                className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                                className={`rounded-full px-2 py-0.5 text-[10px] sm:text-xs font-semibold ${
                                   rule.isActive
                                     ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
                                     : "bg-slate-100 text-slate-500"
@@ -860,18 +999,18 @@ export default function Home() {
                               >
                                 {rule.isActive ? "Active" : "Paused"}
                               </span>
-                              <span className="text-xs text-slate-400">
+                              <span className="text-[11px] text-slate-400">
                                 Triggered {rule.totalTriggered || 0} times
                               </span>
                             </div>
 
                             {/* Trigger Keywords */}
-                            <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                              <span className="text-xs font-medium text-slate-500">Trigger Keywords:</span>
+                            <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                              <span className="text-[11px] font-medium text-slate-500">Keywords:</span>
                               {rule.triggerKeywords.map((kw, i) => (
                                 <span
                                   key={i}
-                                  className="rounded-md bg-indigo-50 border border-indigo-100/80 px-2 py-0.5 text-xs font-medium text-indigo-700"
+                                  className="rounded-md bg-indigo-50 border border-indigo-100/80 px-2 py-0.5 text-[11px] font-medium text-indigo-700"
                                 >
                                   {kw}
                                 </span>
@@ -880,10 +1019,10 @@ export default function Home() {
                           </div>
 
                           {/* Actions */}
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-between sm:justify-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                             <button
                               onClick={() => toggleRule(rule._id, rule.isActive)}
-                              className={`rounded-xl px-3.5 py-1.5 text-xs font-semibold transition ${
+                              className={`flex-1 sm:flex-initial rounded-xl px-3.5 py-2 text-xs font-semibold transition active:scale-95 ${
                                 rule.isActive
                                   ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
                                   : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm"
@@ -894,7 +1033,7 @@ export default function Home() {
 
                             <button
                               onClick={() => handleDeleteRule(rule._id)}
-                              className="rounded-xl p-2 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition"
+                              className="rounded-xl p-2 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition active:scale-95"
                               title="Delete Rule"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -903,13 +1042,13 @@ export default function Home() {
                         </div>
 
                         {/* Details Grid */}
-                        <div className="mt-5 grid gap-4 rounded-xl bg-slate-50/80 p-4 sm:grid-cols-2 border border-slate-100">
+                        <div className="mt-4 grid gap-3 sm:gap-4 rounded-xl bg-slate-50/80 p-3 sm:p-4 grid-cols-1 sm:grid-cols-2 border border-slate-100">
                           <div>
                             <div className="flex items-center gap-1.5 text-slate-600 font-semibold text-xs">
                               <Send className="h-3.5 w-3.5 text-indigo-600" />
                               <span>Private DM Message (Delivered to inbox)</span>
                             </div>
-                            <p className="mt-2 text-xs leading-relaxed text-slate-700 bg-white p-3 rounded-lg border border-slate-200/60 font-mono">
+                            <p className="mt-1.5 text-xs leading-relaxed text-slate-700 bg-white p-3 rounded-lg border border-slate-200/60 font-mono break-words">
                               {rule.dmMessage}
                             </p>
                           </div>
@@ -919,7 +1058,7 @@ export default function Home() {
                               <MessageSquare className="h-3.5 w-3.5 text-violet-600" />
                               <span>Public Comment Replies ({rule.commentReplies?.length || 0} variations)</span>
                             </div>
-                            <div className="mt-2 space-y-1.5">
+                            <div className="mt-1.5 space-y-1.5">
                               {rule.commentReplies?.slice(0, 3).map((reply, idx) => (
                                 <p
                                   key={idx}
@@ -1331,11 +1470,11 @@ export default function Home() {
                       </div>
                     )}
 
-                    <div className="pt-2 flex flex-wrap items-center gap-3">
+                    <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
                       <button
                         type="submit"
                         disabled={savingSettings}
-                        className="rounded-xl bg-slate-900 px-6 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition disabled:opacity-50"
+                        className="rounded-xl bg-slate-900 px-6 py-3 sm:py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition disabled:opacity-50 text-center active:scale-95"
                       >
                         {savingSettings ? "Saving Settings..." : "Save Meta Credentials"}
                       </button>
@@ -1344,7 +1483,7 @@ export default function Home() {
                         type="button"
                         onClick={handleSubscribePage}
                         disabled={subscribing}
-                        className="rounded-xl border border-indigo-200 bg-indigo-50 px-5 py-2.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition disabled:opacity-50"
+                        className="rounded-xl border border-indigo-200 bg-indigo-50 px-5 py-3 sm:py-2.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition disabled:opacity-50 text-center active:scale-95"
                       >
                         {subscribing ? "Subscribing Page..." : "🔗 Subscribe Page to Webhooks (1-Click)"}
                       </button>
@@ -1353,8 +1492,8 @@ export default function Home() {
                 </div>
 
                 {/* Step-by-Step Meta Developer Setup Guide */}
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
-                  <h3 className="font-bold text-slate-900">Step-by-Step Meta Developer Setup Guide (Hinglish)</h3>
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-8 shadow-sm">
+                  <h3 className="font-bold text-sm sm:text-base text-slate-900">Step-by-Step Meta Developer Setup Guide (Hinglish)</h3>
                   <div className="mt-4 space-y-4 text-xs text-slate-600 leading-relaxed">
                     <div className="border-l-2 border-indigo-500 pl-4 py-1">
                       <h4 className="font-semibold text-slate-900">Step 1: Meta Developer App Create Karein</h4>
@@ -1404,14 +1543,78 @@ export default function Home() {
         </section>
       </div>
 
+      {/* Fixed Mobile Bottom Navigation Bar */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around border-t border-slate-200/90 bg-white/95 px-2 py-1.5 backdrop-blur-lg shadow-[0_-4px_25px_rgba(0,0,0,0.06)] lg:hidden">
+        <button
+          onClick={() => setActiveTab("overview")}
+          className={`flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-1 transition text-[11px] font-semibold active:scale-95 ${
+            activeTab === "overview"
+              ? "text-slate-900"
+              : "text-slate-400 hover:text-slate-600"
+          }`}
+        >
+          <div className={`p-1.5 rounded-xl transition ${activeTab === "overview" ? "bg-slate-900 text-white shadow-sm" : ""}`}>
+            <Activity className="h-4 w-4" />
+          </div>
+          <span>Overview</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("rules")}
+          className={`relative flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-1 transition text-[11px] font-semibold active:scale-95 ${
+            activeTab === "rules"
+              ? "text-slate-900"
+              : "text-slate-400 hover:text-slate-600"
+          }`}
+        >
+          <div className={`p-1.5 rounded-xl transition ${activeTab === "rules" ? "bg-slate-900 text-white shadow-sm" : ""}`}>
+            <Layers className="h-4 w-4" />
+          </div>
+          <span>Rules</span>
+          {rules.length > 0 && (
+            <span className="absolute top-1 right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[9px] font-bold text-white shadow-sm">
+              {rules.length}
+            </span>
+          )}
+        </button>
+
+        <button
+          onClick={() => setActiveTab("simulator")}
+          className={`flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-1 transition text-[11px] font-semibold active:scale-95 ${
+            activeTab === "simulator"
+              ? "text-slate-900"
+              : "text-slate-400 hover:text-slate-600"
+          }`}
+        >
+          <div className={`p-1.5 rounded-xl transition ${activeTab === "simulator" ? "bg-slate-900 text-white shadow-sm" : ""}`}>
+            <Sparkles className="h-4 w-4 text-violet-500" />
+          </div>
+          <span>Simulator</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("settings")}
+          className={`flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-1 transition text-[11px] font-semibold active:scale-95 ${
+            activeTab === "settings"
+              ? "text-slate-900"
+              : "text-slate-400 hover:text-slate-600"
+          }`}
+        >
+          <div className={`p-1.5 rounded-xl transition ${activeTab === "settings" ? "bg-slate-900 text-white shadow-sm" : ""}`}>
+            <SettingsIcon className="h-4 w-4" />
+          </div>
+          <span>Settings</span>
+        </button>
+      </nav>
+
       {/* CREATE RULE MODAL */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-2xl bg-white p-6 sm:p-8 shadow-xl max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm p-3 sm:p-4">
+          <div className="w-full max-w-lg rounded-2xl bg-white p-4 sm:p-7 shadow-2xl max-h-[92vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3 sm:pb-4">
               <div>
-                <h3 className="font-bold text-base text-slate-900">Create Comment Automation Rule</h3>
-                <p className="text-xs text-slate-500">Auto reply to comments and send direct messages</p>
+                <h3 className="font-bold text-sm sm:text-base text-slate-900">Create Comment Automation Rule</h3>
+                <p className="text-[11px] sm:text-xs text-slate-500">Auto reply to comments and send direct messages</p>
               </div>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
@@ -1421,7 +1624,7 @@ export default function Home() {
               </button>
             </div>
 
-            <form onSubmit={handleCreateRule} className="mt-5 space-y-4 text-xs">
+            <form onSubmit={handleCreateRule} className="mt-4 sm:mt-5 space-y-3.5 sm:space-y-4 text-xs">
               <div>
                 <label className="block font-semibold text-slate-700 uppercase tracking-wider text-[11px]">
                   Rule Name
@@ -1432,7 +1635,7 @@ export default function Home() {
                   value={newRule.name}
                   onChange={(e) => setNewRule({ ...newRule, name: e.target.value })}
                   placeholder="e.g. Free E-book Reel Giveaway"
-                  className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-900 focus:border-slate-900 focus:outline-none"
+                  className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-base sm:text-xs text-slate-900 focus:border-slate-900 focus:outline-none"
                 />
               </div>
 
@@ -1446,7 +1649,7 @@ export default function Home() {
                   value={newRule.keywords}
                   onChange={(e) => setNewRule({ ...newRule, keywords: e.target.value })}
                   placeholder="e.g. link, pdf, price, course, free"
-                  className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-900 focus:border-slate-900 focus:outline-none"
+                  className="mt-1.5 w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-base sm:text-xs text-slate-900 focus:border-slate-900 focus:outline-none"
                 />
                 <p className="mt-1 text-[11px] text-slate-400">
                   When a comment contains any of these keywords, the automation triggers.
@@ -1463,7 +1666,7 @@ export default function Home() {
                   value={newRule.dmMessage}
                   onChange={(e) => setNewRule({ ...newRule, dmMessage: e.target.value })}
                   placeholder="Hey {username}! 🚀 Here is the link you requested: https://example.com/link"
-                  className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-xs text-slate-900 focus:border-slate-900 focus:outline-none font-mono"
+                  className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-base sm:text-xs text-slate-900 focus:border-slate-900 focus:outline-none font-mono"
                 />
                 <p className="mt-1 text-[11px] text-slate-400">
                   Use <code className="text-indigo-600 font-bold">&#123;username&#125;</code> to insert the commenter&apos;s username dynamically.
@@ -1479,7 +1682,7 @@ export default function Home() {
                   value={newRule.commentReplies}
                   onChange={(e) => setNewRule({ ...newRule, commentReplies: e.target.value })}
                   placeholder="Check your DM! 📩&#10;Sent to your inbox! Check messages ✨"
-                  className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-xs text-slate-900 focus:border-slate-900 focus:outline-none"
+                  className="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-base sm:text-xs text-slate-900 focus:border-slate-900 focus:outline-none"
                 />
                 <p className="mt-1 text-[11px] text-slate-400">
                   Multiple variations prevent Instagram from flagging automated replies as spam.
@@ -1503,14 +1706,14 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setIsCreateModalOpen(false)}
-                  className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                  className="flex-1 sm:flex-initial rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 text-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={creatingRule}
-                  className="rounded-xl bg-slate-900 px-5 py-2 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
+                  className="flex-1 sm:flex-initial rounded-xl bg-slate-900 px-5 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-50 text-center"
                 >
                   {creatingRule ? "Creating..." : "Save Rule"}
                 </button>
