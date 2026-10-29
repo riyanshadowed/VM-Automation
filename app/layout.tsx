@@ -13,15 +13,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vyapar Automate - Instagram Automation Dashboard",
-  description: "Instagram comment-to-DM automation workspace",
+  title: "VyaparMitra - Instagram Growth & Automation",
+  description: "Official Meta Graph API Instagram Comment-to-DM automation for creators & businesses.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0f172a",
+  themeColor: "#064e3b",
 };
 
 export default function RootLayout({

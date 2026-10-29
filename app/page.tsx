@@ -411,14 +411,18 @@ export default function Home() {
               <div>
                 <div className="flex items-center justify-between pb-5 border-b border-slate-100">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-sm font-bold text-white shadow-md shadow-indigo-100">
-                      VA
-                    </div>
+                    <img
+                      src="/logo.png"
+                      alt="VyaparMitra Logo"
+                      className="h-11 w-11 rounded-xl object-contain border border-slate-200/80 bg-white shadow-sm p-0.5"
+                    />
                     <div>
-                      <p className="font-bold tracking-tight text-slate-900 leading-tight">Vyapar Automate</p>
+                      <p className="font-extrabold tracking-tight text-slate-900 leading-tight text-base">
+                        Vyapar<span className="text-emerald-600">Mitra</span>
+                      </p>
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <p className="text-[11px] text-slate-500 font-medium">Instagram Auto-DM</p>
+                        <p className="text-[11px] text-slate-500 font-medium">Auto-DM &amp; Growth</p>
                       </div>
                     </div>
                   </div>
@@ -527,14 +531,18 @@ export default function Home() {
         {/* Desktop Sidebar */}
         <aside className="hidden w-64 shrink-0 border-r border-slate-200 bg-white px-5 py-6 lg:flex lg:flex-col">
           <div className="mb-8 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-sm font-bold text-white shadow-md shadow-indigo-100">
-              VA
-            </div>
+            <img
+              src="/logo.png"
+              alt="VyaparMitra Logo"
+              className="h-11 w-11 rounded-xl object-contain border border-slate-200/80 bg-white shadow-sm p-0.5"
+            />
             <div>
-              <p className="font-bold tracking-tight text-slate-900">Vyapar Automate</p>
-              <div className="flex items-center gap-1.5">
+              <p className="font-extrabold tracking-tight text-slate-900 leading-tight text-lg">
+                Vyapar<span className="text-emerald-600">Mitra</span>
+              </p>
+              <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <p className="text-xs text-slate-500 font-medium">Instagram Auto-DM</p>
+                <p className="text-xs text-slate-500 font-medium">Auto-DM &amp; Growth</p>
               </div>
             </div>
           </div>
@@ -624,7 +632,7 @@ export default function Home() {
         {/* Main Content Area */}
         <section className="flex-1 flex flex-col min-w-0">
           {/* Header */}
-          <header className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white/90 backdrop-blur-md px-4 py-3 sm:px-8 sm:py-4">
+          <header className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white/95 backdrop-blur-md px-4 py-3 sm:px-8 sm:py-3.5 shadow-sm">
             <div className="flex items-center gap-3 min-w-0">
               {/* Mobile Drawer Button */}
               <button
@@ -635,31 +643,44 @@ export default function Home() {
                 <Menu className="h-5 w-5" />
               </button>
 
+              {/* Brand Logo on Mobile */}
+              <img
+                src="/logo.png"
+                alt="VyaparMitra"
+                className="lg:hidden h-8 w-8 rounded-lg object-contain border border-slate-200/80 bg-white p-0.5 shrink-0"
+              />
+
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <span className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                    Vyapar Automate
+                  <span className="text-[10px] sm:text-xs font-bold text-emerald-800 uppercase tracking-wider bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/80">
+                    VyaparMitra
                   </span>
-                  <span className="text-slate-300">•</span>
-                  <span className="text-[10px] sm:text-xs font-semibold text-indigo-600 capitalize">
+                  <span className="text-slate-300 hidden xs:inline">•</span>
+                  <span className="text-[10px] sm:text-xs font-semibold text-slate-500 capitalize hidden xs:inline">
                     {activeTab}
                   </span>
                 </div>
-                <h1 className="text-sm sm:text-xl font-bold tracking-tight text-slate-900 truncate">
-                  {activeTab === "overview" && "Dashboard & Activity"}
-                  {activeTab === "rules" && "Automation Rules"}
+                <h1 className="text-sm sm:text-lg font-extrabold tracking-tight text-slate-900 truncate">
+                  {activeTab === "overview" && "Instagram Automation Dashboard"}
+                  {activeTab === "rules" && "Comment-to-DM Rules"}
                   {activeTab === "simulator" && "Event Simulator"}
-                  {activeTab === "settings" && "Meta API Settings"}
+                  {activeTab === "settings" && "Meta API Credentials"}
                 </h1>
               </div>
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
+              {/* Account Connection Pill */}
+              <div className="hidden md:flex items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50/90 px-3 py-1.5 text-xs">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="font-semibold text-slate-700">@vyaparmitraapp</span>
+              </div>
+
               <button
                 onClick={fetchData}
                 disabled={refreshing}
                 title="Refresh data"
-                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white p-2 sm:px-3 sm:py-2 text-xs font-medium text-slate-600 shadow-sm hover:bg-slate-50 transition active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white p-2 sm:px-3 sm:py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition active:scale-95"
               >
                 <RefreshCw className={`h-4 w-4 sm:h-3.5 sm:w-3.5 ${refreshing ? "animate-spin" : ""}`} />
                 <span className="hidden sm:inline">Refresh</span>
@@ -667,7 +688,7 @@ export default function Home() {
 
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-slate-800 transition active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition active:scale-95 shadow-emerald-600/20"
               >
                 <Plus className="h-4 w-4" />
                 <span className="hidden xs:inline sm:inline">New Rule</span>
@@ -680,31 +701,34 @@ export default function Home() {
             {/* OVERVIEW TAB */}
             {activeTab === "overview" && (
               <>
-                {/* Hero Banner */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 p-4 sm:p-8 text-white shadow-lg">
+                {/* Hero Banner with VyaparMitra Brand Gradient */}
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 p-4 sm:p-8 text-white shadow-xl border border-slate-800">
+                  <div className="absolute right-6 -bottom-6 opacity-15 pointer-events-none hidden md:block">
+                    <img src="/logo.png" alt="" className="h-44 w-44 object-contain rounded-2xl" />
+                  </div>
                   <div className="relative z-10 max-w-2xl">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/20 px-3 py-1 text-[11px] sm:text-xs font-medium text-indigo-300 backdrop-blur-sm border border-indigo-500/30">
-                      <Sparkles className="h-3.5 w-3.5 text-indigo-300" />
-                      Instant Lead Generation Engine
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] sm:text-xs font-semibold text-emerald-300 backdrop-blur-sm border border-emerald-500/30">
+                      <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+                      VyaparMitra AI Auto-DM Engine
                     </span>
-                    <h2 className="mt-3 sm:mt-4 text-lg sm:text-2xl font-bold tracking-tight">
-                      Reel & Post Comments ko Direct Customers me convert karein.
+                    <h2 className="mt-3 sm:mt-4 text-lg sm:text-2xl font-extrabold tracking-tight">
+                      Reel &amp; Post Comments ko Direct Customers &amp; Leads me badlein.
                     </h2>
                     <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-300">
                       Jab koi follower aapke Reel ya Post par keyword comment karega (jaise &ldquo;PRICE&rdquo;, &ldquo;LINK&rdquo;, &ldquo;PDF&rdquo;),
-                      hamara system instantly public comment reply dega aur direct message (DM) me link send karega.
+                      VyaparMitra instantly public comment reply dega aur direct message (DM) me link send karega.
                     </p>
 
                     <div className="mt-5 sm:mt-6 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5">
                       <button
                         onClick={() => setActiveTab("simulator")}
-                        className="rounded-xl bg-white px-4 py-2.5 text-xs font-semibold text-slate-950 transition hover:bg-slate-100 shadow-sm text-center"
+                        className="rounded-xl bg-emerald-500 px-4 py-2.5 text-xs font-bold text-slate-950 transition hover:bg-emerald-400 shadow-md shadow-emerald-500/20 text-center active:scale-95"
                       >
                         Try Live Simulator →
                       </button>
                       <button
                         onClick={() => setActiveTab("rules")}
-                        className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/10 text-center"
+                        className="rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/15 text-center active:scale-95"
                       >
                         Manage Rules ({rules.length})
                       </button>
@@ -1549,11 +1573,11 @@ export default function Home() {
           onClick={() => setActiveTab("overview")}
           className={`flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-1 transition text-[11px] font-semibold active:scale-95 ${
             activeTab === "overview"
-              ? "text-slate-900"
+              ? "text-emerald-700"
               : "text-slate-400 hover:text-slate-600"
           }`}
         >
-          <div className={`p-1.5 rounded-xl transition ${activeTab === "overview" ? "bg-slate-900 text-white shadow-sm" : ""}`}>
+          <div className={`p-1.5 rounded-xl transition ${activeTab === "overview" ? "bg-emerald-600 text-white shadow-sm shadow-emerald-600/30" : ""}`}>
             <Activity className="h-4 w-4" />
           </div>
           <span>Overview</span>
@@ -1563,16 +1587,16 @@ export default function Home() {
           onClick={() => setActiveTab("rules")}
           className={`relative flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-1 transition text-[11px] font-semibold active:scale-95 ${
             activeTab === "rules"
-              ? "text-slate-900"
+              ? "text-emerald-700"
               : "text-slate-400 hover:text-slate-600"
           }`}
         >
-          <div className={`p-1.5 rounded-xl transition ${activeTab === "rules" ? "bg-slate-900 text-white shadow-sm" : ""}`}>
+          <div className={`p-1.5 rounded-xl transition ${activeTab === "rules" ? "bg-emerald-600 text-white shadow-sm shadow-emerald-600/30" : ""}`}>
             <Layers className="h-4 w-4" />
           </div>
           <span>Rules</span>
           {rules.length > 0 && (
-            <span className="absolute top-1 right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-indigo-600 px-1 text-[9px] font-bold text-white shadow-sm">
+            <span className="absolute top-1 right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-emerald-600 px-1 text-[9px] font-bold text-white shadow-sm">
               {rules.length}
             </span>
           )}
@@ -1582,12 +1606,12 @@ export default function Home() {
           onClick={() => setActiveTab("simulator")}
           className={`flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-1 transition text-[11px] font-semibold active:scale-95 ${
             activeTab === "simulator"
-              ? "text-slate-900"
+              ? "text-emerald-700"
               : "text-slate-400 hover:text-slate-600"
           }`}
         >
-          <div className={`p-1.5 rounded-xl transition ${activeTab === "simulator" ? "bg-slate-900 text-white shadow-sm" : ""}`}>
-            <Sparkles className="h-4 w-4 text-violet-500" />
+          <div className={`p-1.5 rounded-xl transition ${activeTab === "simulator" ? "bg-emerald-600 text-white shadow-sm shadow-emerald-600/30" : ""}`}>
+            <Sparkles className="h-4 w-4" />
           </div>
           <span>Simulator</span>
         </button>
@@ -1596,11 +1620,11 @@ export default function Home() {
           onClick={() => setActiveTab("settings")}
           className={`flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-1 transition text-[11px] font-semibold active:scale-95 ${
             activeTab === "settings"
-              ? "text-slate-900"
+              ? "text-emerald-700"
               : "text-slate-400 hover:text-slate-600"
           }`}
         >
-          <div className={`p-1.5 rounded-xl transition ${activeTab === "settings" ? "bg-slate-900 text-white shadow-sm" : ""}`}>
+          <div className={`p-1.5 rounded-xl transition ${activeTab === "settings" ? "bg-emerald-600 text-white shadow-sm shadow-emerald-600/30" : ""}`}>
             <SettingsIcon className="h-4 w-4" />
           </div>
           <span>Settings</span>
