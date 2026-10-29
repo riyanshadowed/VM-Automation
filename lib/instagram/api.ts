@@ -78,6 +78,11 @@ export function findMatchingRule(
       const keyword = rawKeyword.toLowerCase().trim();
       if (!keyword) continue;
 
+      if (keyword === "*" || keyword === "all") {
+        matchedKeywords.push(keyword);
+        continue;
+      }
+
       if (rule.matchType === "exact") {
         if (normalizedComment === keyword) {
           matchedKeywords.push(keyword);
@@ -116,11 +121,12 @@ export async function sendPublicCommentReply(
   try {
     const url = `https://graph.facebook.com/v21.0/${encodeURIComponent(
       commentId
-    )}/replies`;
+    )}/replies?access_token=${encodeURIComponent(accessToken)}`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         message,
@@ -167,6 +173,7 @@ export async function sendPrivateReplyDM(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         recipient: {
@@ -206,10 +213,13 @@ export async function likeInstagramComment(
   try {
     const url = `https://graph.facebook.com/v21.0/${encodeURIComponent(
       commentId
-    )}/likes`;
+    )}/likes?access_token=${encodeURIComponent(accessToken)}`;
     const response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
       body: JSON.stringify({ access_token: accessToken }),
     });
     const data = await response.json();

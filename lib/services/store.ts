@@ -383,11 +383,23 @@ export async function clearAllLogs(): Promise<void> {
   saveLocalData(data);
 }
 
+function isCleanToken(t?: string | null): boolean {
+  if (!t || typeof t !== "string") return false;
+  const s = t.trim();
+  if (s.includes(" ") || s.includes("\t") || s.includes("\n") || s.startsWith("App")) return false;
+  return s.startsWith("EAA") && s.length > 50;
+}
+
 export async function getSettings(): Promise<AppSettings> {
+  const envToken = isCleanToken(process.env.INSTAGRAM_PAGE_ACCESS_TOKEN)
+    ? process.env.INSTAGRAM_PAGE_ACCESS_TOKEN!.trim()
+    : "";
+
   const db = await connectToDatabase();
   if (db) {
     const s = await SettingsModel.findOne().lean();
     if (s) {
+      const dbToken = isCleanToken(s.pageAccessToken) ? s.pageAccessToken!.trim() : "";
       return {
         metaAppId: s.metaAppId || process.env.META_APP_ID || "",
         metaAppSecret: s.metaAppSecret || process.env.META_APP_SECRET || "",
@@ -395,8 +407,7 @@ export async function getSettings(): Promise<AppSettings> {
           s.metaVerifyToken ||
           process.env.META_VERIFY_TOKEN ||
           "vyapar_automate_verify_token_123",
-        pageAccessToken:
-          s.pageAccessToken || process.env.INSTAGRAM_PAGE_ACCESS_TOKEN || "",
+        pageAccessToken: dbToken || envToken,
         instagramAccountId:
           s.instagramAccountId || process.env.INSTAGRAM_ACCOUNT_ID || "",
         pageId: s.pageId || process.env.FACEBOOK_PAGE_ID || "",
@@ -405,6 +416,10 @@ export async function getSettings(): Promise<AppSettings> {
   }
 
   const data = getLocalData();
+  const localToken = isCleanToken(data.settings?.pageAccessToken)
+    ? data.settings.pageAccessToken.trim()
+    : "";
+
   return {
     metaAppId: data.settings?.metaAppId || process.env.META_APP_ID || "",
     metaAppSecret: data.settings?.metaAppSecret || process.env.META_APP_SECRET || "",
@@ -412,10 +427,7 @@ export async function getSettings(): Promise<AppSettings> {
       data.settings?.metaVerifyToken ||
       process.env.META_VERIFY_TOKEN ||
       "vyapar_automate_verify_token_123",
-    pageAccessToken:
-      data.settings?.pageAccessToken ||
-      process.env.INSTAGRAM_PAGE_ACCESS_TOKEN ||
-      "",
+    pageAccessToken: localToken || envToken,
     instagramAccountId:
       data.settings?.instagramAccountId ||
       process.env.INSTAGRAM_ACCOUNT_ID ||
