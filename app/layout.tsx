@@ -25,7 +25,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#064e3b",
+  themeColor: "#090d16",
 };
 
 export default function RootLayout({
@@ -36,14 +36,37 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased bg-[#090d16] text-slate-100`}
       suppressHydrationWarning
     >
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <script src="https://cdn.tailwindcss.com"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              tailwind.config = {
+                darkMode: 'class',
+                theme: {
+                  extend: {
+                    colors: {
+                      dark: {
+                        bg: '#090d16',
+                        card: '#111827',
+                        cardHover: '#162032',
+                        border: '#1f293d',
+                        borderHover: '#334155',
+                        muted: '#64748b'
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+          }}
+        />
       </head>
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-[#090d16] text-slate-100 antialiased selection:bg-emerald-500 selection:text-slate-950" suppressHydrationWarning>
         {children}
       </body>
     </html>
